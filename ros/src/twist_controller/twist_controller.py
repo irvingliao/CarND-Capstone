@@ -41,7 +41,7 @@ class Controller(object):
 
         self.last_time = rospy.get_time()
 
-    def control(self, *args, **kwargs):
+    def control(self, current_vel, dbw_enable, linear_vel, argular_vel):
         # TODO: Change the arg, kwarg list to suit your needs
 
         # if dbw not enabled, reset controller
