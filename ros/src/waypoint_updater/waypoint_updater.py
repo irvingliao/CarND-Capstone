@@ -98,8 +98,8 @@ class WaypointUpdater(object):
     def publish_waypoints(self, closest_idx):
         lane = Lane()
         lane.header = self.base_waypoints.header
-		# move 2 waypoint ahead. otherwise, waypoint sometimes will in the back of car
-		closest_idx += 2
+        # move 2 waypoint ahead. otherwise, waypoint sometimes will in the back of car
+        closest_idx += 2
         lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx + LOOKAHEAD_WPS]
         self.final_waypoints_pub.publish(lane)
 
