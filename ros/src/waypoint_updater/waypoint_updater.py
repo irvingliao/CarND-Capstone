@@ -43,7 +43,7 @@ class WaypointUpdater(object):
         self.base_waypoints = None
         self.waypoints_2d = None
         self.waypoint_tree = None
-        self.stopline_waypoint_idx = None
+        self.stopline_waypoint_idx = -1
 
         self.loop()
 
@@ -82,7 +82,7 @@ class WaypointUpdater(object):
             new_wp = Waypoint()
             new_wp.pose = wp.pose
             # Update stop idx to avoid the vechile head cross the stop line
-            stop_idx = max(self.stopline_wp_idx - closest_idx - 3, 0)
+            stop_idx = max(self.stopline_waypoint_idx - closest_idx - 3, 0)
             dist = self.distance(waypoints, i, stop_idx)
             vel = math.sqrt(2 * MAX_DECEL * dist)
             if vel < 1.0:
@@ -100,7 +100,14 @@ class WaypointUpdater(object):
         lane.header = self.base_waypoints.header
         # move 2 waypoint ahead. otherwise, waypoint sometimes will in the back of car
         closest_idx += 2
-        lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx + LOOKAHEAD_WPS]
+        farthest_idx = closest_idx + LOOKAHEAD_WPS
+
+        if (self.stopline_waypoint_idx == -1) or (self.stopeline_waypoint_idx >= farthest_idx):
+            lane.waypoints = self.base_waypoints.waypoints[closest_idx:farthest_idx]
+        else:
+            lane.waypoints = self.waypoints_before_stopline(
+                                  self.base_waypoints.waypoints[closest_idx:farthest_idx],
+                                  closest_idx)
         self.final_waypoints_pub.publish(lane)
 
     def pose_cb(self, msg):
