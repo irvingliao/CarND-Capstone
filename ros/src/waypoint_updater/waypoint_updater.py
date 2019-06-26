@@ -5,7 +5,7 @@ import numpy as np
 from geometry_msgs.msg import PoseStamped
 from styx_msgs.msg import Lane, Waypoint
 from scipy.spatial import KDTree
-
+from std_msgs.msg import Int32
 import math
 
 '''
@@ -24,7 +24,7 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
-
+MAX_DECEL = 0.5
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -56,7 +56,7 @@ class WaypointUpdater(object):
                 self.publish_waypoints(closest_waypoint_idx)
             rate.sleep()
 
-    def get_closest_waypoint_id(self):
+    def get_closest_waypoint_idx(self):
         x = self.pose.pose.position.x
         y = self.pose.pose.position.y
         closest_idx = self.waypoint_tree.query([x,y], 1)[1]
@@ -84,7 +84,7 @@ class WaypointUpdater(object):
             # Update stop idx to avoid the vechile head cross the stop line
             stop_idx = max(self.stopline_wp_idx - closest_idx - 3, 0)
             dist = self.distance(wyapoints, i, stop_idx)
-            vel = math.sqrt(2 * MAX)dECEL * dist)
+            vel = math.sqrt(2 * MAX_DECEL * dist)
             if vel < 1.0:
                 vel = 0.0
 
@@ -96,7 +96,7 @@ class WaypointUpdater(object):
         return new_waypoints
 
     def publish_waypoints(self, closest_idx):
-        lane = lane()
+        lane = Lane()
         lane.header = self.base_waypoints.header
         lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx + LOOKAHEAD_WPS]
         self.final_waypoints_pub.publish(lane)
@@ -110,7 +110,9 @@ class WaypointUpdater(object):
         # TODO: Implement
         self.base_waypoints = waypoints
         if not self.waypoints_2d:
-            self.waypoints_2d = [[waypoint.posse.pose.position.x, waypoint.pose.pose.position.y] for waypoint in waypoints.waypoint]
+            self.waypoints_2d = [[waypoint.pose.pose.position.x, 
+                                  waypoint.pose.pose.position.y] 
+                                  for waypoint in waypoints.waypoints]
             self.waypoint_tree = KDTree(self.waypoints_2d)
         pass
 

@@ -62,7 +62,6 @@ class DBWNode(object):
         self.current_vel = None
         self.linear_vel = None
         self.angular_vel = None
-        self.
         # TODO: Subscribe to all the topics you need to
 
         self.loop()
@@ -85,7 +84,7 @@ class DBWNode(object):
                                                                           self.linear_vel,
                                                                           self.angular_vel)
             if not self.dbw_enabled:
-                self.pushlish(self.throttle, self.brake, self.steering)
+                self.publish(self.throttle, self.brake, self.steering)
             rate.sleep()
 
     def publish(self, throttle, brake, steer):
