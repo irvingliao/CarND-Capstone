@@ -41,7 +41,7 @@ class Controller(object):
 
         self.last_time = rospy.get_time()
 
-    def control(self, current_vel, dbw_enabled, linear_vel, argular_vel):
+    def control(self, current_vel, dbw_enabled, linear_vel, angular_vel):
         # TODO: Change the arg, kwarg list to suit your needs
 
         # if dbw not enabled, reset controller
@@ -54,7 +54,7 @@ class Controller(object):
         else:
             vel = current_vel
 
-        steering = self.yaw_controller.get_steering(linear_vel, argular_vel, vel)
+        steering = self.yaw_controller.get_steering(linear_vel, angular_vel, vel)
         vel_error = linear_vel - vel
 
         current_time = rospy.get_time()
