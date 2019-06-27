@@ -14,12 +14,14 @@ class TLClassifier(object):
         self.sess = None
         self.predict = None
 
-        if is_site:
-           self.model_path += 'models/real_mobilenets_ssd_38k_epochs_frozen_inference_graph.pb'
-        else:
-           self.model_path += 'models/sim_mobilenets_ssd_30k_epochs_frozen_inference_graph.pb'
+        current_path = rospkg.RosPack().get_path('tl_detector')
 
-        rospy.loginfo('Loading model: ' + self.path_to_model)
+        if is_site:
+           self.model_path = current_path + '/light_classification/models/real_mobilenets_ssd_38k_epochs_frozen_inference_graph.pb'
+        else:
+           self.model_path = current_path + '/light_classification/models/sim_mobilenets_ssd_30k_epochs_frozen_inference_graph.pb'
+
+        rospy.loginfo('Loading model: ' + self.model_path)
 
         # Load graph from model
         self.detection_graph = self.load_graph(self.model_path)
@@ -39,11 +41,11 @@ class TLClassifier(object):
         self.detection_classes = self.detection_graph.get_tensor_by_name('detection_classes:0')
 
         # Number of predictions found in the image
-        self.num_detections = self.detection_graph.get_tensor_by_name('prefix/num_detections:0')
+        self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
 
         self.sess = tf.Session(graph=self.detection_graph, config=config)
 
-    def load_graph(graph_file):
+    def load_graph(self, graph_file):
         """Loads a frozen inference graph"""
         graph = tf.Graph()
         with graph.as_default():
@@ -54,7 +56,7 @@ class TLClassifier(object):
                 tf.import_graph_def(od_graph_def, name='')
         return graph
 
-    def filter_obj(min_score, scores, classes):
+    def filter_obj(self, min_score, scores, classes):
         """Return boxes with a confidence >= `min_score`"""
         n = len(classes)
         idxs = []
