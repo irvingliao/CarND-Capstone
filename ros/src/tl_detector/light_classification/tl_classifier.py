@@ -28,6 +28,10 @@ class TLClassifier(object):
         # Load graph from model
         self.detection_graph = self.load_graph(self.model_path)
 
+        # self.config = tf.ConfigProto(log_device_placement=False)
+        # self.config.gpu_options.per_process_gpu_memory_fraction = 0.8
+        # self.config.operation_timeout_in_ms = 50000 
+
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
 
@@ -45,6 +49,7 @@ class TLClassifier(object):
         # Number of predictions found in the image
         self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
 
+        # with self.detection_graph.as_default():
         self.sess = tf.Session(graph=self.detection_graph, config=config)
 
     def load_graph(self, graph_file):
