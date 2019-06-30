@@ -49,8 +49,8 @@ class TLClassifier(object):
         # Number of predictions found in the image
         self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
 
-        # with self.detection_graph.as_default():
-        self.sess = tf.Session(graph=self.detection_graph, config=config)
+        with self.detection_graph.as_default():
+            self.sess = tf.Session(graph=self.detection_graph, config=config)
 
     def load_graph(self, graph_file):
         """Loads a frozen inference graph"""
