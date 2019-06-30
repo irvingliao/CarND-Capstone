@@ -23,7 +23,7 @@ as well as to verify your TL classifier.
 TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
-LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
+LOOKAHEAD_WPS = 130 # Number of waypoints we will publish. You can change this number
 MAX_DECEL = 0.5
 
 class WaypointUpdater(object):
@@ -102,7 +102,7 @@ class WaypointUpdater(object):
         closest_idx += 2
         farthest_idx = closest_idx + LOOKAHEAD_WPS
 
-        if (self.stopline_waypoint_idx == -1) or (self.stopeline_waypoint_idx >= farthest_idx):
+        if (self.stopline_waypoint_idx == -1) or (self.stopline_waypoint_idx >= farthest_idx):
             lane.waypoints = self.base_waypoints.waypoints[closest_idx:farthest_idx]
         else:
             lane.waypoints = self.waypoints_before_stopline(
