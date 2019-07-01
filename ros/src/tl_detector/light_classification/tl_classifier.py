@@ -13,9 +13,9 @@ class TLClassifier(object):
         # load classifier
         self.sess = None
         self.predict = None
-		
+	
         rospy.loginfo('tl_classifier start')
-		
+
         current_path = rospkg.RosPack().get_path('tl_detector')
 
         if is_site:
