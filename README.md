@@ -1,11 +1,11 @@
 ## Capstone Project Summary
 ### Hands Free Team Introduce
- * Team Lead: Name: "Yue Cao (Leon)", Udacity Account: skyue1@hotmail.com,   
+ * Team Lead: Name: `Yue Cao (Leon)`, Udacity Account: `skyue1@hotmail.com`
    * Task: Waypoint_update, Twist Control and Integration 
- * Members  : Name: Kenny Liao,     Udacity Account: irvingliao@gmail.com
-              Name: John Chen,      Udacity Account: blues0730@gmail.com
-              Name: Vivek Sharma,   Udacity Account: vivekmsit@gmail.com
-              Name: Abeer Ghander,  Udacity Account: abeer.ghander@gmail.com
+ * Members  : Name: `Kenny Liao`,     Udacity Account: `irvingliao@gmail.com`
+              Name: `John Chen`,      Udacity Account: `blues0730@gmail.com`
+              Name: `Vivek Sharma`,   Udacity Account: `vivekmsit@gmail.com`
+              Name: `Abeer Ghander`,  Udacity Account: `abeer.ghander@gmail.com`
 ### Implementation Introduce
 #### Waypoint Update
 #### Twist Control
