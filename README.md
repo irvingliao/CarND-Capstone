@@ -2,10 +2,15 @@
 ### Hands Free Team Introduce
  * Team Lead: Name: `Yue Cao (Leon)`, Udacity Account: `skyue1@hotmail.com`
    * Task: Waypoint_update, Twist Control and Integration 
- * Members  : Name: `Kenny Liao`,     Udacity Account: `irvingliao@gmail.com`
-              Name: `John Chen`,      Udacity Account: `blues0730@gmail.com`
-              Name: `Vivek Sharma`,   Udacity Account: `vivekmsit@gmail.com`
-              Name: `Abeer Ghander`,  Udacity Account: `abeer.ghander@gmail.com`
+ * Member   : Name: `Kenny Liao`,     Udacity Account: `irvingliao@gmail.com`
+   * Task: Traffic Light Dectection and Integration
+ * Member   : Name: `John Chen`,      Udacity Account: `blues0730@gmail.com`
+   * Task: Traffic Light Dectection
+ * Member   : Name: `Vivek Sharma`,   Udacity Account: `vivekmsit@gmail.com`
+   * Task: Traffic Light Dectection
+ * Member   : Name: `Abeer Ghander`,  Udacity Account: `abeer.ghander@gmail.com`
+   * Task: All python code and code reviewer. 
+   
 ### Implementation Introduce
 #### Waypoint Update
 #### Twist Control
