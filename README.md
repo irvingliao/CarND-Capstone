@@ -3,7 +3,7 @@
 |       | Name   | Udacity Account | Task  |
 | :----: | :-------:|:-------------:| :-----:|
 | Leader | Yuec Cao (Leon) | skyue1@hotmail.com | Waypoint_update, Twist Control and Integration |
-| Member | Kenny Liao | irvingliao@gmail.com | Traffic Light Dectection and Integration |
+| Member | Kenny Liao | irvingliao@gmail.com | Traffic Light Dectection and Integration, training guide |
 | Member | John Chen | blues0730@gmail.com | Traffic Light Dectection Investigation and generation |
 | Member | Vivek Sharma | vivekmsit@gmail.com | Traffic Light Dectection Investigation and generation | 
 | OpenCV | Abeer Ghander | abeer.ghander@gmail.com | All python code and code reviewer |
@@ -17,8 +17,26 @@
    * Function `traffic_cb()` is the callback for `/traffic_waypoint` for the stop waypoints of traffic light. Function `waypoints_before_stopline()` is processing the velocity of vehicle if the traffic light is red. The decrease velocity is caculated by `math.sqrt(2 * MAX_DECEL * dist)` and MAX_DECEL equals to 0.5. 
  * There is on publishing message `final_waypoints`. The function `publish_waypoints()` is response for publish this message. If the `stopline_waypoint_idx` is in the array of waypoints ahead of vehicle, then updated the waypoints array by `waypoints_before_stopline()`. Otherwise will return the current waypoint to 130 farther waypoints. 
 #### Twist Control
- * 
-#### Traffic Light Dectection
+ * PID Control is reused provided module.
+   * PID parameters: P = 0.3, i = 0.0001 and d = 0. And tau = 0.5, ts = 0.02
+   * For PID control: It will check if dbw_enable is set, if not set return 0. 
+    * `vel` is checked if larger than target velocity. If it is larger then call vel_lpf.filt() to get limited velocity.
+    * `steering` is updated yaw_controller.get_steering(linear_vel, angular_vel, vel)
+    * `throttle` is updated throttle_controller.step(vel_error, sample_time) and should limited the max throttle not larger than requst.
+    * `brake` should be set 700NS when velocity is close to 0 to make Carla stop.
+ * DBW Node
+  * Message `/vehicle/dbw_enabled` is subscribed to check if DBW should be enabled.
+  * Message `/twist_cmd` is subscribed to update linear velocity and angular velocity for PID control.
+  * Message `/current_velocity` is subscribed to update linear velocity.
+  * Then PID `control()` function will be invoked. And publish the `/current_velocity` for velocity control; publish the `/vehicle/throttle_cmd` for speed up; publish `/vehicle/brake_cmd` for brake power.
+#### Traffic Light Detection
+ * Our traffic light detection module is SSD mobilenet. There are two trained models, one for simulator and can identify the traffic light correctly more than 90%; the other for Carla can identify correctly > 70%. 
+ * It is to hard to prepare Tensorflow 1.3 for new model training. The tensorflow version in Carla is too old and it is very hard to merge latest models to Carla. We waste a lot of time on this activity. Hope Carla can update tensorflow!!!
+ * tl_detector is callback triggered programm. `save_img()` for debug purpose. `image_cb()` will call `process_traffic_lights()` to identify the image of traffic light and publish `/traffic_waypoint` if the light is red. `image_cb()` is invoked by message `/image_raw` for Carla test OR message `/image_color` for simulator.
+  * Subscribe message `/current_pose` is to get current pose of vechile. 
+  * Subscribe message `/base_waypoints` is to get all waypoints.
+  * Subscribe message `/vehicle/traffic_lights` is to get the light waypoint and call `get_light_state()` and it calls `get_classification()` which is implemented in tl_classifier.py to identify the light color.
+  * tl_detector will check if current is for site test (Carla), if yes, will use the SSD model for site test. Otherwise will call for SSD model for simulator.
 
 -------------------------------------------
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
