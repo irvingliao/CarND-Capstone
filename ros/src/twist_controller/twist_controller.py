@@ -6,7 +6,7 @@ import rospy
 
 GAS_DENSITY = 2.858
 ONE_MPH = 0.44704
-
+TARGET_VEL_M_S = 5 #2.78
 
 class Controller(object):
     def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit,
@@ -23,7 +23,7 @@ class Controller(object):
         d = 0.
 
         min_throttle = 0.
-        max_throttle = 0.2
+        max_throttle = 0.4
 
         # initialize PID controller
         self.throttle_controller = PID(p, i, d, min_throttle, max_throttle)
@@ -49,7 +49,7 @@ class Controller(object):
             self.throttle_controller.reset()
             return 0., 0., 0.
         # filter current velocity
-        if linear_vel > 2.78:  # 2.78 m/s -> 10 km/h
+        if linear_vel > TARGET_VEL_M_S:  # 2.78 m/s -> 10 km/h
             vel = self.vel_lpf.filt(current_vel)
         else:
             vel = current_vel
@@ -62,7 +62,7 @@ class Controller(object):
         self.last_time = current_time
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
-        if linear_vel < 2.78:  # 2.78 m/s -> 10 km/h
+        if linear_vel < TARGET_VEL_M_S:  # 2.78 m/s -> 10 km/h
             throttle = 0.25 * throttle
 
         brake = 0.

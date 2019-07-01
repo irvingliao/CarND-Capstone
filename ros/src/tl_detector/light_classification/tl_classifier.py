@@ -13,6 +13,8 @@ class TLClassifier(object):
         # load classifier
         self.sess = None
         self.predict = None
+	
+        rospy.loginfo('tl_classifier start')
 
         current_path = rospkg.RosPack().get_path('tl_detector')
 
@@ -26,8 +28,8 @@ class TLClassifier(object):
         # Load graph from model
         self.detection_graph = self.load_graph(self.model_path)
 
-        config = tf.ConfigProto()
-        config.gpu_options.allow_growth = True
+        self.config = tf.ConfigProto()
+        self.config.gpu_options.allow_growth = True
 
         # The input placeholder for the image.
         # `get_tensor_by_name` returns the Tensor with the associated name in the Graph.
@@ -43,7 +45,8 @@ class TLClassifier(object):
         # Number of predictions found in the image
         self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
 
-        self.sess = tf.Session(graph=self.detection_graph, config=config)
+        with self.detection_graph.as_default():
+            self.sess = tf.Session(graph=self.detection_graph, config=self.config)
 
     def load_graph(self, graph_file):
         """Loads a frozen inference graph"""
@@ -92,12 +95,13 @@ class TLClassifier(object):
         output_score, output_classes = self.filter_obj(confidence_cutoff, scores, classes)
 
         lights = ["red", "yellow", "green"]
-        colorIndex = output_classes[0]-1
-        if len(output_classes) == 0:            
-            rospy.loginfo("Predicted light doesn't exceed the threshold: " + lights[colorIndex] + " , score: " + str(scores[0]))     
-            return TrafficLight.UNKNOWN
 
-        rospy.loginfo("Predicted light: " + lights[colorIndex] + " , score: " + str(output_score[0]))
+        if len(output_classes) == 0:            
+            rospy.loginfo("tl_classifier.py: Predicted light Unknown")
+            return TrafficLight.UNKNOWN
+        else:
+            colorIndex = output_classes[0] - 1
+        rospy.loginfo("tl_classifier.py: Predicted light: " + lights[colorIndex] + " , score: " + str(output_score[0]))
 
         if colorIndex == 0:
             return TrafficLight.RED

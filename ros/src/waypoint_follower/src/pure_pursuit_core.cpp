@@ -240,12 +240,12 @@ bool PurePursuit::verifyFollowing() const
   //ROS_ERROR("side diff : %lf , angle diff : %lf",displacement,relative_angle);
   if (displacement < displacement_threshold_ && relative_angle < relative_angle_threshold_)
   {
-    // ROS_INFO("Following : True");
+    ROS_INFO("Following : True");
     return true;
   }
   else
   {
-    // ROS_INFO("Following : False");
+    ROS_INFO("Following : False");
     return false;
   }
 }
