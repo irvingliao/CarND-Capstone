@@ -37,6 +37,9 @@
   * Subscribe message `/base_waypoints` is to get all waypoints.
   * Subscribe message `/vehicle/traffic_lights` is to get the light waypoint and call `get_light_state()` and it calls `get_classification()` which is implemented in tl_classifier.py to identify the light color.
   * tl_detector will check if current is for site test (Carla), if yes, will use the SSD model for site test. Otherwise will call for SSD model for simulator.
+  
+### Suggestion
+ * For "ROS in VM + Simulator", the communication latency between VM and simulator is quite big and affect student to know if his code is correct. Install ROS to ubuntu is quite easy and there is no any delay between ROS+Simulator. At least should describe this limitation and mention ROS+ubuntu is a good choice. Then it will not waste debug time.
 
 -------------------------------------------
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
