@@ -1,19 +1,23 @@
 ## Capstone Project Summary
 ### Hands Free Team Introduce
- * Team Lead: Name: `Yue Cao (Leon)`, Udacity Account: `skyue1@hotmail.com`
-   * Task: Waypoint_update, Twist Control and Integration 
- * Member   : Name: `Kenny Liao`,     Udacity Account: `irvingliao@gmail.com`
-   * Task: Traffic Light Dectection and Integration
- * Member   : Name: `John Chen`,      Udacity Account: `blues0730@gmail.com`
-   * Task: Traffic Light Dectection
- * Member   : Name: `Vivek Sharma`,   Udacity Account: `vivekmsit@gmail.com`
-   * Task: Traffic Light Dectection
- * Member   : Name: `Abeer Ghander`,  Udacity Account: `abeer.ghander@gmail.com`
-   * Task: All python code and code reviewer. 
-   
+|       | Name   | Udacity Account | Task  |
+| :----: | :-------:|:-------------:| :-----:|
+| Leader | Yuec Cao (Leon) | skyue1@hotmail.com | Waypoint_update, Twist Control and Integration |
+| Member | Kenny Liao | irvingliao@gmail.com | Traffic Light Dectection and Integration |
+| Member | John Chen | blues0730@gmail.com | Traffic Light Dectection Investigation and generation |
+| Member | Vivek Sharma | vivekmsit@gmail.com | Traffic Light Dectection Investigation and generation | 
+| OpenCV | Abeer Ghander | abeer.ghander@gmail.com | All python code and code reviewer |
+
 ### Implementation Introduce
 #### Waypoint Update
+ * LOOKAHEAD_WPS was changed from 200 to 130 to reduce the caculation of traffic light detection on Camera image.
+ * Waypoint update is running on 50Hz frequency and subscriber `/current_pose`, `/base_waypoints` and `/traffic_waypoint`.
+   * Function `pose_cb()` will be invoked when there is new `/current_pose` message. `pose_cb()` update current pose of vehicle. Function `get_closest_waypoint_idx()` to update the waypoints ahead of vehicle.
+   * Function `waypoints_cb()` is the callback for `/base_waypoints` to get all waypoints of simulator or site. 
+   * Function `traffic_cb()` is the callback for `/traffic_waypoint` for the stop waypoints of traffic light. Function `waypoints_before_stopline()` is processing the velocity of vehicle if the traffic light is red. The decrease velocity is caculated by `math.sqrt(2 * MAX_DECEL * dist)` and MAX_DECEL equals to 0.5. 
+ * There is on publishing message `final_waypoints`. The function `publish_waypoints()` is response for publish this message. If the `stopline_waypoint_idx` is in the array of waypoints ahead of vehicle, then updated the waypoints array by `waypoints_before_stopline()`. Otherwise will return the current waypoint to 130 farther waypoints. 
 #### Twist Control
+ * 
 #### Traffic Light Dectection
 
 -------------------------------------------
