@@ -4,7 +4,7 @@
 | :----: | :-------:|:-------------:| :-----:|
 | Leader | Yuec Cao (Leon) | skyue1@hotmail.com | Waypoint_update, Twist Control and Integration |
 | Member | Kenny Liao | irvingliao@gmail.com | Traffic Light Dectection and Integration, training guide |
-| Member | John Chen | blues0730@gmail.com | Traffic Light Dectection Investigation and generation |
+| Member | ChunYang Chen (John) | blues0730@gmail.com | Traffic Light Dectection Investigation and generation |
 | Member | Vivek Sharma | vivekmsit@gmail.com | Traffic Light Dectection Investigation and generation | 
 | OpenCV | Abeer Ghander | abeer.ghander@gmail.com | All python code and code reviewer |
 
